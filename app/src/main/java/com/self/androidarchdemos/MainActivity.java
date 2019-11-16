@@ -2,10 +2,10 @@ package com.self.androidarchdemos;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,10 +14,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
-
-    Thread counterThread;
-    int count = 0;
-    boolean isCounterInProgress;
+    MainActivityViewModel mainActivityViewModel;
 
     Button startButton, stopButton;
 
@@ -27,29 +24,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        isCounterInProgress = false;
 
-        counterThread = new Thread(new Runnable() {
+        mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+
+        mainActivityViewModel.getCounterValue().observe(this, new Observer<Integer>() {
             @Override
-            public void run() {
-                while (isCounterInProgress) {
-                    try {
-                        Thread.sleep(1000);
-                        count++;
-                        textViewCounter.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                textViewCounter.setText("Counter: "+count);
-                            }
-                        });
-                    }catch (InterruptedException e){
-                        e.printStackTrace();
-                    }
-
-                }
+            public void onChanged(Integer integer) {
+                textViewCounter.setText("Counter: "+integer);
             }
         });
-
 
         textViewCounter = (TextView)findViewById(R.id.textViewCunter);
         startButton = (Button)findViewById(R.id.start);
@@ -58,19 +41,14 @@ public class MainActivity extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(!isCounterInProgress){
-                    isCounterInProgress = true;
-                    counterThread.start();
-                }
-
+                mainActivityViewModel.startCounter();
             }
         });
 
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                isCounterInProgress = false;
+                mainActivityViewModel.stopCounter();
             }
         });
     }
