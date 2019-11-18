@@ -28,5 +28,13 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
     def lifecycle_version = "2.1.0"
+
+    //ViewModel & LiveData Dependency
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+
+    //only ViewModel dependency
+    //implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
+
+    // only LiveData Dependency
+    //implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
 }
