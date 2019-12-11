@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
 
         mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
 
+        getLifecycle().addObserver(mainActivityViewModel);
+
         mainActivityViewModel.getCounterValue().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
@@ -56,6 +58,5 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
     }
 }

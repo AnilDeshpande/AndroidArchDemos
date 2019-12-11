@@ -1,16 +1,23 @@
 package com.self.androidarchdemos;
 
+import android.util.Log;
+
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ViewModel;
 
-public class MainActivityViewModel extends ViewModel {
+public class MainActivityViewModel extends ViewModel implements LifecycleObserver {
 
-    Thread counterThread;
-    int count = 0;
-    boolean isCounterInProgress;
+    private static final String TAG = MainActivityViewModel.class.getSimpleName();
 
-    MutableLiveData<Integer> counterValue;
+    private Thread counterThread;
+    private int count = 0;
+    private boolean isCounterInProgress;
+
+    private MutableLiveData<Integer> counterValue;
 
     public MainActivityViewModel(){
         isCounterInProgress = false;
@@ -24,10 +31,10 @@ public class MainActivityViewModel extends ViewModel {
                         Thread.sleep(1000);
                         count++;
                         counterValue.postValue(count);
+                        Log.i(TAG,"Counter in progress: "+count);
                     }catch (InterruptedException e){
                         e.printStackTrace();
                     }
-
                 }
             }
         });
@@ -46,5 +53,10 @@ public class MainActivityViewModel extends ViewModel {
 
     public void stopCounter(){
         isCounterInProgress = false;
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    public void someLifeCyclebsedAction(){
+        Log.i(TAG,"Execute this when Activity gets resumed");
     }
 }
