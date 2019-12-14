@@ -25,16 +25,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+        mainActivityViewModel = ViewModelProviders
+                .of(this)
+                .get(MainActivityViewModel.class);
 
-        getLifecycle().addObserver(mainActivityViewModel);
-
-        mainActivityViewModel.getCounterValue().observe(this, new Observer<Integer>() {
+        mainActivityViewModel.getCounterValue()
+                .observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
                 textViewCounter.setText("Counter: "+integer);
             }
         });
+
+        getLifecycle().addObserver(mainActivityViewModel);
 
         textViewCounter = (TextView)findViewById(R.id.textViewCunter);
         startButton = (Button)findViewById(R.id.start);

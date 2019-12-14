@@ -9,7 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ViewModel;
 
-public class MainActivityViewModel extends ViewModel implements LifecycleObserver {
+public class MainActivityViewModel extends ViewModel implements LifecycleObserver{
 
     private static final String TAG = MainActivityViewModel.class.getSimpleName();
 
@@ -56,7 +56,7 @@ public class MainActivityViewModel extends ViewModel implements LifecycleObserve
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
-    public void someLifeCyclebsedAction(){
-        Log.i(TAG,"Execute this when Activity gets resumed");
+    private void functionalityBasedOnSomeLifeCyclerEventInActivity(){
+        Log.i(TAG,"Execute this method when Activity is resumed");
     }
 }
