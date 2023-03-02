@@ -16,21 +16,6 @@ public class MainActivityViewModel extends ViewModel {
         isCounterInProgress = false;
         counterValue = new MutableLiveData<>();
 
-        counterThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (isCounterInProgress) {
-                    try {
-                        Thread.sleep(1000);
-                        count++;
-                        counterValue.postValue(count);
-                    }catch (InterruptedException e){
-                        e.printStackTrace();
-                    }
-
-                }
-            }
-        });
     }
 
     public LiveData<Integer> getCounterValue(){
@@ -40,6 +25,21 @@ public class MainActivityViewModel extends ViewModel {
     public void startCounter(){
         if(!isCounterInProgress){
             isCounterInProgress = true;
+            counterThread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    while (isCounterInProgress) {
+                        try {
+                            Thread.sleep(1000);
+                            count++;
+                            counterValue.postValue(count);
+                        }catch (InterruptedException e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                }
+            });
             counterThread.start();
         }
     }
